@@ -15,7 +15,7 @@ class CarValPipeline:
         self.output_dir = '../../diagrams'
         self.data_preparator = data_preparation()
         self.pre_processor = pre_process()
-        self.model = RandomForestRegressor(max_depth=15, random_state=42, n_jobs=-1, n_estimators=300)
+        self.model = RandomForestRegressor(max_depth=15, random_state=42, n_jobs=-1, n_estimators=300, bootstrap=True)
         self.n_splits = n_splits
         self.results = []
 
