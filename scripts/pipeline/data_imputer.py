@@ -91,5 +91,6 @@ class data_imputer(BaseEstimator, TransformerMixin):
             X['chilometraggio'] = X['chilometraggio'].fillna(X['anno produzione'].map(self.mean_chilometraggio_by_anno)).fillna(
                 self.overall_chilometraggio_mean)
 
+        X.drop_duplicates(inplace=True)
 
         return X

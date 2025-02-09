@@ -1,12 +1,29 @@
 import streamlit as st
 import joblib
 import pandas as pd
+import os
+
+import os
+
+# Ottieni la directory dello script attuale
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Percorso della cartella pipeline
+pipeline_dir = os.path.join(script_dir, "pipeline")
+
+# Verifica che la cartella esista
+if not os.path.exists(pipeline_dir):
+    raise FileNotFoundError(f"La cartella pipeline non esiste: {pipeline_dir}")
+
+# Ora puoi caricare i file senza cambiare directory
+model_path = os.path.join(pipeline_dir, "random_forest_regressor_model.pkl")
+transformers_path = os.path.join(pipeline_dir, "pipeline_regressor_transformers.pkl")
 
 
 @st.cache_resource
 def load_resources():
-    model = joblib.load("pipe/pipeline/random_forest_regressor_model.pkl")
-    transformers = joblib.load('pipe/pipeline/pipeline_regressor_transformers.pkl')
+    model = joblib.load(model_path)
+    transformers = joblib.load(transformers_path)
     known_makes = transformers['preparator'].encoder.known_makes
     return model, transformers, known_makes
 
