@@ -1,9 +1,20 @@
+import sys
+
 import streamlit as st
 import joblib
 import pandas as pd
 import os
 
 import os
+from pipeline import *
+
+# Percorso assoluto della cartella 'pipeline'
+pipeline_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "pipeline"))
+
+# Aggiungi la cartella 'pipeline' a sys.path
+if pipeline_path not in sys.path:
+    sys.path.append(pipeline_path)
+
 
 # Ottieni la directory dello script attuale
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -18,6 +29,7 @@ if not os.path.exists(pipeline_dir):
 # Ora puoi caricare i file senza cambiare directory
 model_path = os.path.join(pipeline_dir, "random_forest_regressor_model.pkl")
 transformers_path = os.path.join(pipeline_dir, "pipeline_regressor_transformers.pkl")
+
 
 
 @st.cache_resource
