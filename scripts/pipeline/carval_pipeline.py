@@ -15,9 +15,9 @@ class CarValPipeline:
         self.output_dir = '../../diagrams'
         self.data_preparator = data_preparation()
         self.pre_processor = pre_process()
-        self.model = RandomForestRegressor(max_depth=15, random_state=42, n_jobs=-1, n_estimators=300, bootstrap=True)
         self.n_splits = n_splits
         self.results = []
+        self.model = None
 
         # Creazione cartella per salvare i diagrammi
         os.makedirs(self.output_dir, exist_ok=True)
@@ -40,11 +40,22 @@ class CarValPipeline:
 
     def train(self, X_train, X_test, y_train, y_test, fold):
         print(f'\nTraining del modello per fold {fold + 1}/{self.n_splits}...')
-        self.model.fit(X_train, y_train)
+        model = RandomForestRegressor(
+        max_depth=25,                  # Controlla la complessità del modello
+        n_estimators=200,               # Bilanciamento tra performance e velocità
+        min_samples_split=5,            # Riduce overfitting
+        min_samples_leaf=2,             # Previene overfitting sulle foglie
+        max_features='sqrt',            # Ottimizza il trade-off bias-variance
+        n_jobs=-1,                      # Usa tutti i core disponibili
+        random_state=42,
+        bootstrap=True                   # Migliora la generalizzazione
+        )
+
+        model.fit(X_train, y_train)
 
         # Previsioni
-        y_train_pred = self.model.predict(X_train)
-        y_test_pred = self.model.predict(X_test)
+        y_train_pred = model.predict(X_train)
+        y_test_pred = model.predict(X_test)
 
         # Calcolo delle metriche
         fold_results = {
@@ -61,8 +72,10 @@ class CarValPipeline:
 
         self.results.append(fold_results)
 
+        self.model = model
+
         # Plot Feature Importance
-        feature_importances = self.model.feature_importances_
+        feature_importances = model.feature_importances_
         feature_names = X_train.columns
 
         plt.figure(figsize=(10, 6))
@@ -78,7 +91,7 @@ class CarValPipeline:
         # Salviamo i risultati in un file CSV
         results_df = pd.DataFrame(self.results)
         os.makedirs('./results', exist_ok=True)
-        results_df.to_csv('fold_results.csv', index=False)
+        results_df.to_csv('./results/fold_results.csv', index=False)
 
     def run_pipeline(self, path):
         X, y = self.prepare_data(path)
