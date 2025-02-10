@@ -41,14 +41,15 @@ class CarValPipeline:
     def train(self, X_train, X_test, y_train, y_test, fold):
         print(f'\nTraining del modello per fold {fold + 1}/{self.n_splits}...')
         model = RandomForestRegressor(
-        max_depth=25,                  # Controlla la complessità del modello
-        n_estimators=200,               # Bilanciamento tra performance e velocità
-        min_samples_split=5,            # Riduce overfitting
-        min_samples_leaf=2,             # Previene overfitting sulle foglie
+        max_depth=14,                  # Controlla la complessità del modello
+        n_estimators=300,               # Bilanciamento tra performance e velocità
+        min_samples_split=10,            # Riduce overfitting
+        min_samples_leaf=4,             # Previene overfitting sulle foglie
         max_features='sqrt',            # Ottimizza il trade-off bias-variance
         n_jobs=-1,                      # Usa tutti i core disponibili
-        random_state=42,
-        bootstrap=True                   # Migliora la generalizzazione
+        random_state=20,
+        bootstrap=True,                 # Migliora la generalizzazione
+        criterion='squared_error'
         )
 
         model.fit(X_train, y_train)
