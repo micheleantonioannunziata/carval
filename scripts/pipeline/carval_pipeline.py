@@ -41,7 +41,7 @@ class CarValPipeline:
     def train(self, X_train, X_test, y_train, y_test, fold):
         print(f'\nTraining del modello per fold {fold + 1}/{self.n_splits}...')
         model = RandomForestRegressor(
-        max_depth=14,                  # Controlla la complessità del modello
+        max_depth=18,                  # Controlla la complessità del modello
         n_estimators=300,               # Bilanciamento tra performance e velocità
         min_samples_split=10,            # Riduce overfitting
         min_samples_leaf=4,             # Previene overfitting sulle foglie
@@ -129,6 +129,6 @@ class CarValPipeline:
 
 
 if __name__ == "__main__":
-    pipe = CarValPipeline(n_splits=5)  # Usa 5-fold cross-validation
+    pipe = CarValPipeline(n_splits=10)  # Usa 10-fold cross-validation
     path = "../../dataset/car_prices.csv"
     pipe.run_pipeline(path)

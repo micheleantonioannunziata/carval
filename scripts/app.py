@@ -43,13 +43,13 @@ def load_resources():
 model, transformers, known_makes = load_resources()
 
 # Titolo dell'applicazione
-st.title("Stima del Prezzo di un'Auto")
+st.title("Stima del prezzo di un'auto")
 
 # Creazione dei campi di input
 marca = st.selectbox("Inserisci la marca", known_makes.tolist())
 modello = st.text_input("Inserisci il modello:")
 anno_produzione = st.number_input("Inserisci l'anno di produzione:", min_value=1900, max_value=2015, value=2010, step=1)
-allestimento = st.selectbox("Inserisci l'allestimento:", ['base', 'sport', 'luxury', 'special edition', 'other'])
+allestimento = st.selectbox("Inserisci l'allestimento:", ['base', 'sport', 'luxury', 'special edition', 'touring',  'other'])
 carrozzeria = st.selectbox("Inserisci la carrozzeria:", ['sedan', 'suv', 'hatchback', 'coupé', 'cabriolet', 'station wagon', 'pickup', 'other'])
 
 # ⭐ Sostituzione dello slider con stelle interattive
